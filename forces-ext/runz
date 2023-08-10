@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+g++ -o ../exec.tmp $1.cpp
+cases=$(ls $(pwd) | grep $1\.[0-9]*\.icase | cut -d'.' -f1,2)
+
+for c in $cases;
+do
+    ../exec.tmp < $c.icase > $c.tcase;
+
+    D=$(diff -Z $c.tcase $c.ocase)
+    if [ "$D" ];
+    then
+        echo "Fail $c";
+    else
+        echo "Pass $c";
+    fi
+done
